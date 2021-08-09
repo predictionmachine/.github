@@ -15,7 +15,7 @@ on:
 jobs:
 # registering the central workflow run.
 # see : https://github.com/SvanBoxel/organization-workflows#
-  register-and-lint:
+  register-org-workflow:
     runs-on: ubuntu-latest
     steps:
     - uses: SvanBoxel/organization-workflow@main
@@ -90,3 +90,28 @@ jobs:
         run: |
           echo "Failed due to empty PR description"
           exit 1
+  linting:
+    name: 'Linting: black, flake8'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DOCSTRING_REPORT: output/docstring_report.txt
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: black formatting check
+        uses: reviewdog/action-black@v2
+        with:
+          github_token: '${{ github.event.client_payload }}'
+          black_args: '--config=pyproject.toml'
+          reporter: github-pr-review
+          fail_on_error: true
+      - name: flake8 lint check
+        uses: reviewdog/action-flake8@v3
+        with:
+          github_token: '${{ github.event.client_payload }}'
+          flake8_args: '--config=setup.cfg'
+          reporter: github-pr-review
