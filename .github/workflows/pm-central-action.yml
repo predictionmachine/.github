@@ -1,0 +1,92 @@
+############################################################################################
+# Copyright (C) 2021 Prediction Machine Advisers, LLC
+# This file is available under MIT license
+# based on https://github.com/predictionmachine/pm-github-actions/blob/main/.github/workflows/pm-gh-actions.yml
+# pm-version 0.3.11
+############################################################################################
+
+# This workflow file is a central workflow for Prediction Machine.
+
+name: Central PM CI run
+on:
+  repository_dispatch:
+    types: [org-workflow-bot] # requirement to trigger central workflows
+
+jobs:
+# registering the central workflow run.
+# see : https://github.com/SvanBoxel/organization-workflows#
+  register-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: SvanBoxel/organization-workflow@main
+      with:
+        id: ${{ github.event.client_payload.id }}
+        callback_url: ${{ github.event.client_payload.callback_url }}
+        sha: ${{ github.event.client_payload.sha }}
+        run_id: ${{ github.run_id }}
+        name: ${{ github.workflow }}
+
+  # Check branch name standard as per `pm-coding-template`
+  # Ref: https://github.com/predictionmachine/pm-coding-template#github-branches-pull-requests
+  check-branch-naming-convention:
+    name: Check branch naming convention as per pm-coding-template
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: ${{ github.event_name == 'pull_request' }}
+    env:
+      BRANCH_NAME_RULE: 'https://github.com/predictionmachine/pm-coding-template#github-branches-pull-requests'
+    steps:
+      - name: Check branch name
+        id: branchCheck
+        run: |
+          echo "branch name: $GITHUB_HEAD_REF"
+          if [[ "$GITHUB_HEAD_REF" =~ "/" ]];then
+            echo "::set-output name=is_valid_name::true"
+          else
+            echo "::set-output name=is_valid_name::false"
+          fi
+      - uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ steps.branchCheck.outputs.is_valid_name == 'false' }}
+        with:
+          header: invalid-branch-name-comments
+          message: |
+            👋 &nbsp; @${{ github.event.pull_request.user.login }}
+            Please use a valid [branch name](${{ env.BRANCH_NAME_RULE }}).
+            Make sure you have followed our [contribution guidelines](${{ env.GUIDELINE_REPO }}).
+      - name: Exit job for invalid branch name
+        if: ${{ steps.branchCheck.outputs.is_valid_name == 'false' }}
+        run: |
+          echo "Invalid branch name: $GITHUB_HEAD_REF"
+          echo "Please use the standard mentioned here: $BRANCH_NAME_RULE"
+          exit 1
+
+  enforce-pr-description:
+    name: 'Check PR description, fail if empty'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TEMPLATE_URL: 'https://github.com/predictionmachine/pm-coding-template/blob/main/.github/pull_request_template.md'
+    steps:
+      - name: Check PR description
+        if: ${{ github.event_name == 'pull_request' }}
+        id: getPrBody
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          echo ${PR_BODY:0:5}
+          if [ "${PR_BODY:0:5}" == "" ];then
+            echo "::set-output name=is_empty_body::true"
+          fi
+      - uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ steps.getPrBody.outputs.is_empty_body == 'true' }}
+        with:
+          header: pr-empty-comments
+          message: |
+            👋 &nbsp; @${{ github.event.pull_request.user.login }}
+            Please use the PR template mentioned [here](${{ env.TEMPLATE_URL }})
+            Please make sure you have followed our [contributing guidelines](${{ env.GUIDELINE_REPO }}).
+      - name: Exit the job for empty PR description
+        if: ${{ steps.getPrBody.outputs.is_empty_body == 'true' }}
+        run: |
+          echo "Failed due to empty PR description"
+          exit 1
