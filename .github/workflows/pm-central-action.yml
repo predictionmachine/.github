@@ -11,12 +11,12 @@ name: Central PM CI run
 on:
   repository_dispatch:
     types: [org-workflow-bot] # requirement to trigger central workflows
-  pull_request:
-    types:
-      - opened
-      - edited
-      - reopened
-      - synchronize
+#   pull_request:
+#     types:
+#       - opened
+#       - edited
+#       - reopened
+#       - synchronize
 
 jobs:
 # registering the central workflow run.
