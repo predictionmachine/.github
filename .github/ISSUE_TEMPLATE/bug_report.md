@@ -30,3 +30,6 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional context**
 Add any other context about the problem here.
+
+<!-- version 0.1.0 -->
+<!-- based on https://github.com/predictionmachine/.github/blob/main/issue-template/.github/ISSUE_TEMPLATE/bug_report.md --> 
