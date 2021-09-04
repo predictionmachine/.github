@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: 'Create an issue regarding a bug you encountered '
+about: 'Problems and issues with project '
 title: "[BUG]: "
 labels: bug
 assignees: ''
