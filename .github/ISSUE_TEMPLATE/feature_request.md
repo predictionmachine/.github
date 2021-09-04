@@ -18,3 +18,6 @@ A clear and concise description of any alternative solutions or features you've 
 
 **Additional context**
 Add any other context or screenshots about the feature request here.
+
+<!-- version 0.1.0 -->
+<!-- based on https://github.com/predictionmachine/.github/blob/main/issue-template/.github/ISSUE_TEMPLATE/feature_request.md --> 
