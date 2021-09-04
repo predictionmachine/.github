@@ -1,5 +1,5 @@
 ---
-name: Write your BUG title here
+name: Bug report
 about: 'Create an issue regarding a bug you encountered '
 title: "[BUG]: "
 labels: bug
