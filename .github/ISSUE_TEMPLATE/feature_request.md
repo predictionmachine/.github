@@ -20,4 +20,4 @@ assignees: ''
 <!-- Add any other context or screenshots about the feature request here. -->
 
 <!-- version 0.1.0 -->
-<!-- based on https://github.com/predictionmachine/.github/blob/main/issue-template/.github/ISSUE_TEMPLATE/feature_request.md --> 
+<!-- based on https://github.com/predictionmachine/.github/blob/main/.github/ISSUE_TEMPLATE/feature_request.md --> 

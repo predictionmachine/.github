@@ -26,15 +26,15 @@ Steps to reproduce the behavior:
 **Screenshots:**
 <!-- If applicable, add screenshots to help explain your problem. -->
 
-**Desktop (please complete the following information):**
+## Context
  - OS: <!-- [e.g. macOS] -->
  <!-- If applicable add following details
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+ - Browser: [e.g. chrome, safari]
+ - Version: [e.g. 22]
  -->
 
 **Additional context:**
 <!-- Add any other context about the problem here. -->
 
 <!-- version 0.1.0 -->
-<!-- based on https://github.com/predictionmachine/.github/blob/main/issue-template/.github/ISSUE_TEMPLATE/bug_report.md --> 
+<!-- based on https://github.com/predictionmachine/.github/blob/main/.github/ISSUE_TEMPLATE/bug_report.md --> 
