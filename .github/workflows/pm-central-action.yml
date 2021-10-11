@@ -9,8 +9,10 @@ name: PM CI workflow
 on:
   workflow_call:  # enables this workflow to be reusable for other repo
     secrets:
-      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      CC_TEST_REPORTER_ID:
+        description: 'a repo-specific id provided by Codeclimate'
+      CODECOV_TOKEN:
+        description: 'a repo-specific token for Codcov report upload'
   push:
     branches:
       - dev
